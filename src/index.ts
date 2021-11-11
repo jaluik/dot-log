@@ -3,8 +3,8 @@ import * as vscode from 'vscode';
 class GoCompletionItemProvider implements vscode.CompletionItemProvider {
   public provideCompletionItems(
     document: vscode.TextDocument,
-    position: vscode.Position,
-    token: vscode.CancellationToken
+    position: vscode.Position
+    // token: vscode.CancellationToken
   ): Thenable<vscode.CompletionItem[]> {
     const text = document.getText(
       new vscode.Range(new vscode.Position(position.line, 0), position)
