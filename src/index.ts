@@ -3,25 +3,35 @@ import * as vscode from 'vscode';
 class GoCompletionItemProvider implements vscode.CompletionItemProvider {
   public provideCompletionItems(
     document: vscode.TextDocument,
-    position: vscode.Position
-    // token: vscode.CancellationToken
-  ): Thenable<vscode.CompletionItem[]> {
-    const text = document.getText(
-      new vscode.Range(new vscode.Position(position.line, 0), position)
+    position: vscode.Position,
+    token: vscode.CancellationToken
+  ) {
+    const snippetCompletion = new vscode.CompletionItem('log');
+    snippetCompletion.documentation = new vscode.MarkdownString(
+      'quick console.log result'
     );
+    const linePrefix = document
+      .lineAt(position)
+      .text.substr(0, position.character);
 
-    const data = text
-      .match(/([\S])*.log$/g)
-      ?.map((item) => item.replace('.log', ''));
-
-    if (data?.length) {
-      return Promise.resolve([
-        {
-          label: 'aa',
-        },
-      ]);
+    const matchList = linePrefix.match(/([^\s\.])\.log$/);
+    if (matchList?.length === 2) {
+      const keywordWithDot = matchList[0];
+      const keyword = matchList[1];
+      const startPosition = new vscode.Position(
+        position.line,
+        position.character - keywordWithDot.length
+      );
+      snippetCompletion.insertText = new vscode.SnippetString(
+        `console.log( ${keyword} )`
+      );
+      snippetCompletion.range = {
+        inserting: new vscode.Range(startPosition, position),
+        replacing: new vscode.Range(startPosition, position),
+      };
     }
-    return Promise.resolve([]);
+
+    return [snippetCompletion];
   }
 }
 
@@ -29,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
   const options = vscode.languages.registerCompletionItemProvider(
     'javascript',
     new GoCompletionItemProvider(),
-    '.log'
+    '.'
   );
 
   context.subscriptions.push(options);
