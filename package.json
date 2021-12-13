@@ -16,14 +16,6 @@
     "onLanguage:typescript"
   ],
   "main": "./dist/index.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "dot-log.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
   "scripts": {
     "vscode:prepublish": "yarn run package",
     "compile": "webpack",
