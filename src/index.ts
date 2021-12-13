@@ -1,37 +1,34 @@
 import * as vscode from 'vscode';
 
 class GoCompletionItemProvider implements vscode.CompletionItemProvider {
+  position?: vscode.Position;
+  document?: vscode.TextDocument;
   public provideCompletionItems(
-    document: vscode.TextDocument,
-    position: vscode.Position,
-    token: vscode.CancellationToken
+    _: vscode.TextDocument,
+    position: vscode.Position
   ) {
-    const snippetCompletion = new vscode.CompletionItem('log');
+    const snippetCompletion = new vscode.CompletionItem(
+      'log',
+      vscode.CompletionItemKind.Operator
+    );
     snippetCompletion.documentation = new vscode.MarkdownString(
       'quick console.log result'
     );
-    const linePrefix = document
-      .lineAt(position)
-      .text.substr(0, position.character);
 
-    const matchList = linePrefix.match(/([^\s\.])\.log$/);
-    if (matchList?.length === 2) {
-      const keywordWithDot = matchList[0];
-      const keyword = matchList[1];
-      const startPosition = new vscode.Position(
-        position.line,
-        position.character - keywordWithDot.length
-      );
-      snippetCompletion.insertText = new vscode.SnippetString(
-        `console.log( ${keyword} )`
-      );
-      snippetCompletion.range = {
-        inserting: new vscode.Range(startPosition, position),
-        replacing: new vscode.Range(startPosition, position),
+    this.position = position;
+    return [snippetCompletion];
+  }
+
+  public resolveCompletionItem(item: vscode.CompletionItem) {
+    if (this.position) {
+      item.command = {
+        command: 'dot-log-replace',
+        title: 'refactor',
+        arguments: [this.position.translate(0, 4)],
       };
     }
 
-    return [snippetCompletion];
+    return item;
   }
 }
 
@@ -42,6 +39,34 @@ export function activate(context: vscode.ExtensionContext) {
     '.'
   );
 
+  const command = 'dot-log-replace';
+
+  const commandHandler = (
+    editor: vscode.TextEditor,
+    edit: vscode.TextEditorEdit,
+    position: vscode.Position
+  ) => {
+    const line = editor.document.lineAt(position.line).text;
+    const matchList = line.match(/([^\s\.]*)\.log$/);
+    const text = matchList?.[0];
+    const key = matchList?.[1];
+    if (text && key) {
+      const index = line.indexOf(text);
+      edit.delete(
+        new vscode.Range(
+          position.with(undefined, index),
+          position.with(undefined, index + text.length)
+        )
+      );
+      const innserVal = `console.log('${key}',${key})`;
+      edit.insert(position.with(undefined, index), innserVal);
+    }
+    return Promise.resolve([]);
+  };
+
+  context.subscriptions.push(
+    vscode.commands.registerTextEditorCommand(command, commandHandler)
+  );
   context.subscriptions.push(options);
 }
 
