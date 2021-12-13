@@ -34,7 +34,7 @@ class GoCompletionItemProvider implements vscode.CompletionItemProvider {
 
 export function activate(context: vscode.ExtensionContext) {
   const options = vscode.languages.registerCompletionItemProvider(
-    'javascript',
+    ['javascript', 'typescript'],
     new GoCompletionItemProvider(),
     '.'
   );
