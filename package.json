@@ -1,8 +1,10 @@
 {
   "name": "dot-log",
   "displayName": "Dot Log",
-  "description": "easy to console.log info",
+  "description": "Make it easy to console.log info",
+  "publisher": "jaluik",
   "version": "0.0.1",
+  "icon": "https://photos-1300488255.cos.ap-shanghai.myqcloud.com/vscode/logo.png",
   "engines": {
     "vscode": "^1.61.0"
   },
