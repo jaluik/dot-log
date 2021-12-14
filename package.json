@@ -3,8 +3,8 @@
   "displayName": "Dot Log",
   "description": "Make it easy to console.log info",
   "publisher": "jaluik",
-  "version": "0.0.2",
-  "icon": "logo.png",
+  "version": "0.0.3",
+  "icon": "public/logo.png",
   "engines": {
     "vscode": "^1.61.0"
   },
