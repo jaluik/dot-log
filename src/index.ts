@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 
 class GoCompletionItemProvider implements vscode.CompletionItemProvider {
   position?: vscode.Position;
-  document?: vscode.TextDocument;
   public provideCompletionItems(
     _: vscode.TextDocument,
     position: vscode.Position
@@ -20,11 +19,12 @@ class GoCompletionItemProvider implements vscode.CompletionItemProvider {
   }
 
   public resolveCompletionItem(item: vscode.CompletionItem) {
-    if (this.position) {
+    const label = item.label;
+    if (this.position && typeof label === 'string') {
       item.command = {
         command: 'dot-log-replace',
         title: 'refactor',
-        arguments: [this.position.translate(0, 4)],
+        arguments: [this.position.translate(0, label.length + 1)],
       };
     }
 
@@ -34,7 +34,9 @@ class GoCompletionItemProvider implements vscode.CompletionItemProvider {
 
 export function activate(context: vscode.ExtensionContext) {
   const options = vscode.languages.registerCompletionItemProvider(
-    ['javascript', 'typescript'],
+    {
+      pattern: '**/*.{ts,js,tsx,jsx}',
+    },
     new GoCompletionItemProvider(),
     '.'
   );
@@ -47,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
     position: vscode.Position
   ) => {
     const line = editor.document.lineAt(position.line).text;
-    const matchList = line.match(/([^\s\.]*)\.log$/);
+    const matchList = line.match(/([^\s]*)\.log$/);
     const text = matchList?.[0];
     const key = matchList?.[1];
     if (text && key) {
