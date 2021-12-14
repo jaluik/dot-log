@@ -8,4 +8,4 @@ Using **.log** to log params to the console.
 xxx.log => console.log('xxx', xxx)
 ```
 
-![img](public/show.gif)
+![img](https://raw.githubusercontent.com/jaluik/dot-log/master/public/show.gif)
