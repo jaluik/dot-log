@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import configList from './config';
 
 class GoCompletionItemProvider implements vscode.CompletionItemProvider {
   position?: vscode.Position;
@@ -6,25 +7,29 @@ class GoCompletionItemProvider implements vscode.CompletionItemProvider {
     _: vscode.TextDocument,
     position: vscode.Position
   ) {
-    const snippetCompletion = new vscode.CompletionItem(
-      'log',
-      vscode.CompletionItemKind.Operator
-    );
-    snippetCompletion.documentation = new vscode.MarkdownString(
-      'quick console.log result'
-    );
-
     this.position = position;
-    return [snippetCompletion];
+    const completions = configList.map((item) => {
+      const snippetCompletion = new vscode.CompletionItem(
+        item.type,
+        vscode.CompletionItemKind.Operator
+      );
+      snippetCompletion.documentation = new vscode.MarkdownString(
+        item.document
+      );
+      return snippetCompletion;
+    });
+
+    return completions;
   }
 
   public resolveCompletionItem(item: vscode.CompletionItem) {
     const label = item.label;
     if (this.position && typeof label === 'string') {
+      const config = configList.find((config) => config.type === label);
       item.command = {
         command: 'dot-log-replace',
         title: 'refactor',
-        arguments: [this.position.translate(0, label.length + 1)],
+        arguments: [this.position.translate(0, label.length + 1), config],
       };
     }
 
@@ -40,27 +45,28 @@ export function activate(context: vscode.ExtensionContext) {
     new GoCompletionItemProvider(),
     '.'
   );
-
   const command = 'dot-log-replace';
-
   const commandHandler = (
     editor: vscode.TextEditor,
     edit: vscode.TextEditorEdit,
-    position: vscode.Position
+    position: vscode.Position,
+    config: typeof configList[0]
   ) => {
-    const line = editor.document.lineAt(position.line).text;
-    const matchList = line.match(/([^\s]*)\.log$/);
-    const text = matchList?.[0];
-    const key = matchList?.[1];
+    const lineText = editor.document.lineAt(position.line).text;
+    const matchReg = new RegExp(`\(\[^\\s\]*\)\\\.${config.type}$`);
+    const [text, key] = lineText.match(matchReg) || [];
     if (text && key) {
-      const index = line.indexOf(text);
+      const index = lineText.indexOf(text);
       edit.delete(
         new vscode.Range(
           position.with(undefined, index),
           position.with(undefined, index + text.length)
         )
       );
-      const innserVal = `console.log('${key}',${key})`;
+      let innserVal = `${config.format}('${key}',${key})`;
+      if (key.startsWith("'") || key.startsWith('"')) {
+        innserVal = `${config.format}(${key})`;
+      }
       edit.insert(position.with(undefined, index), innserVal);
     }
     return Promise.resolve([]);
