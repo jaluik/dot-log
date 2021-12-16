@@ -63,9 +63,15 @@ export function activate(context: vscode.ExtensionContext) {
           position.with(undefined, index + text.length)
         )
       );
-      let innserVal = `${config.format}('${key}',${key})`;
-      if (key.startsWith("'") || key.startsWith('"')) {
+      let innserVal: string;
+      if (key.endsWith("'") || key.endsWith('"')) {
         innserVal = `${config.format}(${key})`;
+      } else {
+        let quote = '"';
+        if (key.includes('"')) {
+          quote = "'";
+        }
+        innserVal = `${config.format}(${quote}${key}${quote},${key})`;
       }
       edit.insert(position.with(undefined, index), innserVal);
     }
