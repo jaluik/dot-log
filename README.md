@@ -18,4 +18,4 @@ xxx.cer => console.error('xxx', xxx)
 
 ![img](https://raw.githubusercontent.com/jaluik/dot-log/master/public/show.gif)
 
-MIT © [jaluik](https://github.com/jaluik
+MIT © [jaluik](https://github.com/jaluik)
