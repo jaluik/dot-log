@@ -6,7 +6,7 @@ A vscode extension that uses **.log** to log params to the console.
 
 Search "Dot Log" in vscode extension markets.
 
-## usage
+## Usage
 
 ```javascript
 xxx.log => console.log('xxx', xxx)
@@ -17,3 +17,5 @@ xxx.cer => console.error('xxx', xxx)
 ```
 
 ![img](https://raw.githubusercontent.com/jaluik/dot-log/master/public/show.gif)
+
+MIT © [jaluik](https://github.com/jaluik
