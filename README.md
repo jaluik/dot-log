@@ -1,6 +1,10 @@
 # Dot Log
 
-Using **.log** to log params to the console.
+A vscode extension that uses **.log** to log params to the console.
+
+## Download
+
+Search "Dot Log" in vscode extension markets.
 
 ## usage
 
