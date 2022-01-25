@@ -40,7 +40,7 @@ class GoCompletionItemProvider implements vscode.CompletionItemProvider {
 export function activate(context: vscode.ExtensionContext) {
   const options = vscode.languages.registerCompletionItemProvider(
     {
-      pattern: '**/*.{ts,js,tsx,jsx}',
+      pattern: '**/*.{ts,js,tsx,jsx,vue}',
     },
     new GoCompletionItemProvider(),
     '.'
