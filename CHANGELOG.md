@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.8] - 2022-02-07
+
+### Added
+
+- support space in strings. For example "aa bb".log => console.log("aa bb")
+
 ## [0.0.7] - 2022-01-25
 
 ### Fix

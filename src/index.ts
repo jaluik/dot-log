@@ -53,9 +53,24 @@ export function activate(context: vscode.ExtensionContext) {
     config: typeof configList[0]
   ) => {
     const lineText = editor.document.lineAt(position.line).text;
-    const matchReg = new RegExp(`\(\[^\\s\]*\)\\\.${config.type}$`);
-    const [text, key] = lineText.match(matchReg) || [];
-    if (text && key) {
+    // match case name.log etc.
+    const matchVarReg = new RegExp(`\(\[^\\s\]*\[^\'\"\`\]\).${config.type}$`);
+    // match case 'name'.log etc.  /(['"`])([^'"])\1.log/
+    const matchStrReg = new RegExp(
+      `\(\[\'\"\`\]\)\(\[^\'\"\`\]*\)\\1\.${config.type}$`
+    );
+    let matchFlag: 'var' | 'str' = 'var';
+    let text,
+      key,
+      quote = '"',
+      innserVal = '';
+    [text, key] = lineText.match(matchVarReg) || [];
+    if (!key) {
+      [text, quote, key] = lineText.match(matchStrReg) || [];
+      matchFlag = 'str';
+    }
+    // if matched
+    if (key) {
       const index = lineText.indexOf(text);
       edit.delete(
         new vscode.Range(
@@ -63,18 +78,20 @@ export function activate(context: vscode.ExtensionContext) {
           position.with(undefined, index + text.length)
         )
       );
-      let innserVal: string;
-      if (key.endsWith("'") || key.endsWith('"')) {
-        innserVal = `${config.format}(${key})`;
-      } else {
-        let quote = '"';
-        if (key.includes('"')) {
-          quote = "'";
-        }
+      if (matchFlag === 'var' && key.includes('"')) {
+        quote = "'";
+      }
+      // format like console.log("xxx", xxx)
+      if (matchFlag === 'var') {
         innserVal = `${config.format}(${quote}${key}${quote},${key})`;
+      }
+      // if key is string format like console.log("xxx")
+      if (matchFlag === 'str') {
+        innserVal = `${config.format}(${quote}${key}${quote})`;
       }
       edit.insert(position.with(undefined, index), innserVal);
     }
+
     return Promise.resolve([]);
   };
 
