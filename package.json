@@ -3,7 +3,7 @@
   "displayName": "Dot Log",
   "description": "Make it easy to console.log info",
   "publisher": "jaluik",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "icon": "public/logo.png",
   "engines": {
     "vscode": "^1.61.0"
@@ -17,7 +17,10 @@
   ],
   "activationEvents": [
     "onLanguage:javascript",
-    "onLanguage:typescript"
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onLanguage:vue"
   ],
   "main": "./dist/index.js",
   "scripts": {

@@ -1,6 +1,12 @@
 # Change Log
 
-## [0.0.8] - 2022-02-07
+## [0.0.9] - 2022-02-07
+
+### Fix
+
+- add typescriptreact javascriptreact in activationEvents
+
+## [0.0.8] - 2022-02-06
 
 ### Added
 
