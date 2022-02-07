@@ -60,7 +60,7 @@ export function activate(context: vscode.ExtensionContext) {
     let matchFlag: 'var' | 'str' = 'var';
     let text,
       key,
-      quote = '"',
+      quote = "'",
       innserVal = '';
     [text, key] = lineText.match(matchVarReg) || [];
     if (!key) {

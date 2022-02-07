@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.10] - 2022-02-07
+
+### Fix
+
+- set `'` to be the default quote
+
 ## [0.0.9] - 2022-02-07
 
 ### Fix
