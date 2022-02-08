@@ -76,8 +76,8 @@ export function activate(context: vscode.ExtensionContext) {
           position.with(undefined, index + text.length)
         )
       );
-      if (matchFlag === 'var' && key.includes('"')) {
-        quote = "'";
+      if (matchFlag === 'var' && key.includes("'")) {
+        quote = '"';
       }
       // format like console.log("xxx", xxx)
       if (matchFlag === 'var') {
