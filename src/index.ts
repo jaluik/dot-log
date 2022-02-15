@@ -1,20 +1,30 @@
 import * as vscode from 'vscode';
-import configList from './config';
 
+interface ConfigItem {
+  trigger: string;
+  description: string;
+  format: string;
+}
 class GoCompletionItemProvider implements vscode.CompletionItemProvider {
   position?: vscode.Position;
+  config: ConfigItem[];
+
+  constructor(config: ConfigItem[]) {
+    this.config = config;
+  }
+
   public provideCompletionItems(
     _: vscode.TextDocument,
     position: vscode.Position
   ) {
     this.position = position;
-    const completions = configList.map((item) => {
+    const completions = this.config.map((item) => {
       const snippetCompletion = new vscode.CompletionItem(
-        item.type,
+        item.trigger,
         vscode.CompletionItemKind.Operator
       );
       snippetCompletion.documentation = new vscode.MarkdownString(
-        item.document
+        item.description
       );
       return snippetCompletion;
     });
@@ -24,8 +34,8 @@ class GoCompletionItemProvider implements vscode.CompletionItemProvider {
 
   public resolveCompletionItem(item: vscode.CompletionItem) {
     const label = item.label;
-    if (this.position && typeof label === 'string') {
-      const config = configList.find((config) => config.type === label);
+    if (this.position && this.config && typeof label === 'string') {
+      const config = this.config.find((config) => config.trigger === label);
       item.command = {
         command: 'dot-log-replace',
         title: 'refactor',
@@ -38,9 +48,16 @@ class GoCompletionItemProvider implements vscode.CompletionItemProvider {
 }
 
 export function activate(context: vscode.ExtensionContext) {
+  const dotLogConfig: vscode.WorkspaceConfiguration =
+    vscode.workspace.getConfiguration('dotLog');
+
+  const configList: ConfigItem[] | undefined = dotLogConfig.get('config');
+  if (!configList) {
+    return;
+  }
   const options = vscode.languages.registerCompletionItemProvider(
     ['javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue'],
-    new GoCompletionItemProvider(),
+    new GoCompletionItemProvider(configList),
     '.'
   );
   const command = 'dot-log-replace';
@@ -48,14 +65,16 @@ export function activate(context: vscode.ExtensionContext) {
     editor: vscode.TextEditor,
     edit: vscode.TextEditorEdit,
     position: vscode.Position,
-    config: typeof configList[0]
+    config: ConfigItem
   ) => {
     const lineText = editor.document.lineAt(position.line).text;
     // match case name.log etc.
-    const matchVarReg = new RegExp(`\(\[^\\s\]*\[^\'\"\`\]\).${config.type}$`);
+    const matchVarReg = new RegExp(
+      `\(\[^\\s\]*\[^\'\"\`\]\).${config.trigger}$`
+    );
     // match case 'name'.log etc.  /(['"`])([^'"])\1.log/
     const matchStrReg = new RegExp(
-      `\(\[\'\"\`\]\)\(\[^\'\"\`\]*\)\\1\.${config.type}$`
+      `\(\[\'\"\`\]\)\(\[^\'\"\`\]*\)\\1\.${config.trigger}$`
     );
     let matchFlag: 'var' | 'str' = 'var';
     let text,
