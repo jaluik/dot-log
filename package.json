@@ -60,6 +60,7 @@
       "properties": {
         "dotLog.config": {
           "type": "array",
+          "description": "Customize how to log the result.",
           "default": [
             {
               "trigger": "log",
@@ -86,13 +87,16 @@
             "type": "object",
             "additionalProperties": {
               "trigger": {
-                "type": "string"
+                "type": "string",
+                "required": true
               },
               "description": {
-                "type": "string"
+                "type": "string",
+                "required": true
               },
               "format": {
-                "type": "string"
+                "type": "string",
+                "required": true
               }
             }
           }
