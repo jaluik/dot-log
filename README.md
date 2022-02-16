@@ -18,4 +18,46 @@ xxx.cer => console.error('xxx', xxx)
 
 ![img](https://raw.githubusercontent.com/jaluik/dot-log/master/public/show.gif)
 
+## Advanced
+
+You can customize how to log the result by change VS Code Configuration Settings.
+
+```json
+    //-------- Dot Log Configuration --------
+    "dotLog.config": [
+        {
+            "trigger": "log",  // it means .log can trigger the completion.
+            "description": "quick console.log result", // it  shows completion description when triggered.
+            "format": "console.log"  //the result will be format like "console.log('xxx', xxx)"
+        }
+    ]
+```
+
+the default config is show below, you can copy it end edit it.
+
+```json
+    "dotLog.config": [
+        {
+            "trigger": "log",
+            "description": "quick console.log result",
+            "format": "console.log"
+        },
+        {
+            "trigger": "clg",
+            "description": "quick console.log result",
+            "format": "console.log"
+        },
+        {
+            "trigger": "cwa",
+            "description": "quick console.warn result",
+            "format": "console.warn"
+        },
+        {
+            "trigger": "cer",
+            "description": "quick console.err result",
+            "format": "console.error"
+        }
+  ]
+```
+
 MIT © [jaluik](https://github.com/jaluik)

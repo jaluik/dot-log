@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.1] - 2022-02-16
+
+### Added
+
+- support customized log format
+
 ## [0.0.11] - 2022-02-08
 
 ### Fix
