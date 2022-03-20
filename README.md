@@ -4,7 +4,7 @@ A vscode extension that uses **.log** to log params to the console.
 
 ## Download
 
-Search "Dot Log" in vscode extension markets.
+Search [Dot Log](https://marketplace.visualstudio.com/items?itemName=jaluik.dot-log) in vscode extension markets.
 
 ## Usage
 
