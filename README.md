@@ -29,7 +29,7 @@ You can customize how to log the result by change VS Code Configuration Settings
             "trigger": "log",  // it means .log can trigger the completion.
             "description": "quick console.log result", // it  shows completion description when triggered.
             "format": "console.log",  //the result will be format like "console.log('xxx', xxx)"
-            "prefix": "",  // add the  prefix or suffix console.log(`${prefix}xxx`, xxx)
+            "prefix": "",  // add the  prefix or suffix to console.log(`${prefix}xxx ${suffix}`, xxx)
             "suffix": "",
         }
     ]
