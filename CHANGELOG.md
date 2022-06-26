@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.2] - 2022-06-26
+
+### Added
+
+- support customized prefix and suffix
+
 ## [0.1.1] - 2022-02-16
 
 ### Added

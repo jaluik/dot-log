@@ -4,6 +4,8 @@ interface ConfigItem {
   trigger: string;
   description: string;
   format: string;
+  prefix: string;
+  suffix: string;
 }
 class GoCompletionItemProvider implements vscode.CompletionItemProvider {
   position?: vscode.Position;
@@ -80,7 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
     let text,
       key,
       quote = "'",
-      innserVal = '';
+      insertVal = '';
     [text, key] = lineText.match(matchVarReg) || [];
     if (!key) {
       [text, quote, key] = lineText.match(matchStrReg) || [];
@@ -95,18 +97,21 @@ export function activate(context: vscode.ExtensionContext) {
           position.with(undefined, index + text.length)
         )
       );
+      const prefix = config.prefix || '';
+      const suffix = config.suffix || '';
+
       if (matchFlag === 'var' && key.includes("'")) {
         quote = '"';
       }
       // format like console.log("xxx", xxx)
       if (matchFlag === 'var') {
-        innserVal = `${config.format}(${quote}${key}${quote},${key})`;
+        insertVal = `${config.format}(${quote}${prefix}${key}${suffix}${quote},${key})`;
       }
       // if key is string format like console.log("xxx")
       if (matchFlag === 'str') {
-        innserVal = `${config.format}(${quote}${key}${quote})`;
+        insertVal = `${config.format}(${quote}${key}${quote})`;
       }
-      edit.insert(position.with(undefined, index), innserVal);
+      edit.insert(position.with(undefined, index), insertVal);
     }
 
     return Promise.resolve([]);
