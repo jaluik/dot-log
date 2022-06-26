@@ -3,7 +3,7 @@
   "displayName": "Dot Log",
   "description": "Make it easy to console.log info",
   "publisher": "jaluik",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "icon": "public/logo.png",
   "keywords": [
     "console.log",
