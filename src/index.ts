@@ -58,7 +58,14 @@ export function activate(context: vscode.ExtensionContext) {
     return;
   }
   const options = vscode.languages.registerCompletionItemProvider(
-    ['javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue'],
+    [
+      'html',
+      'javascript',
+      'javascriptreact',
+      'typescript',
+      'typescriptreact',
+      'vue',
+    ],
     new GoCompletionItemProvider(configList),
     '.'
   );

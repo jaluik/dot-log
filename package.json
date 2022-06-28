@@ -20,6 +20,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onLanguage:html",
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
     "onLanguage:typescript",
