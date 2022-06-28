@@ -29,6 +29,7 @@ You can customize how to log the result by change VS Code Configuration Settings
             "trigger": "log",  // it means .log can trigger the completion.
             "description": "quick console.log result", // it  shows completion description when triggered.
             "format": "console.log",  //the result will be format like "console.log('xxx', xxx)"
+            "hideName": false,  // if set true, then xxx.log =>  console.(xxx);
             "prefix": "",  // add the  prefix or suffix to console.log(`${prefix}xxx ${suffix}`, xxx)
             "suffix": "",
         }
@@ -43,6 +44,7 @@ for example, if you set config like this, then the result will be `xxx.exam ===>
             "trigger": "exam",
             "description": "show example",
             "format": "example.log",
+            "hideName": false,
             "prefix": "before ",
             "suffix": " after",
         }
@@ -58,29 +60,21 @@ the default config is show below, you can copy it end edit it.
             "trigger": "log",
             "description": "quick console.log result",
             "format": "console.log",
-            "prefix": "",
-            "suffix": "",
         },
         {
             "trigger": "clg",
             "description": "quick console.log result",
             "format": "console.log",
-            "prefix": "",
-            "suffix": "",
         },
         {
             "trigger": "cwa",
             "description": "quick console.warn result",
             "format": "console.warn",
-            "prefix": "",
-            "suffix": "",
         },
         {
             "trigger": "cer",
             "description": "quick console.err result",
             "format": "console.error",
-            "prefix": "",
-            "suffix": "",
         }
   ]
 ```

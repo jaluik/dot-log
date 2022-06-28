@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.5] - 2022-06-28
+
+### Docs
+
+- update readme
+
 ## [0.1.4] - 2022-06-28
 
 ### Added
