@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 interface ConfigItem {
   trigger: string;
   description: string;
+  hideName: boolean;
   format: string;
   prefix: string;
   suffix: string;
@@ -107,16 +108,20 @@ export function activate(context: vscode.ExtensionContext) {
       const prefix = config.prefix || '';
       const suffix = config.suffix || '';
 
-      if (matchFlag === 'var' && key.includes("'")) {
-        quote = '"';
-      }
-      // format like console.log("xxx", xxx)
-      if (matchFlag === 'var') {
-        insertVal = `${config.format}(${quote}${prefix}${key}${suffix}${quote},${key})`;
-      }
-      // if key is string format like console.log("xxx")
-      if (matchFlag === 'str') {
-        insertVal = `${config.format}(${quote}${key}${quote})`;
+      if (config.hideName === true) {
+        insertVal = `${config.format}(${key})`;
+      } else {
+        if (matchFlag === 'var' && key.includes("'")) {
+          quote = '"';
+        }
+        // format like console.log("xxx", xxx)
+        if (matchFlag === 'var') {
+          insertVal = `${config.format}(${quote}${prefix}${key}${suffix}${quote},${key})`;
+        }
+        // if key is string format like console.log("xxx")
+        if (matchFlag === 'str') {
+          insertVal = `${config.format}(${quote}${key}${quote})`;
+        }
       }
       edit.insert(position.with(undefined, index), insertVal);
     }
