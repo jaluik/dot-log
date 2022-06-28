@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.1.4] - 2022-06-28
+
+### Added
+
+- support html files
+- support hideName property
+
 ## [0.1.3] - 2022-06-26
 
 ### Docs
