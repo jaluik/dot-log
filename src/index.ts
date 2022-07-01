@@ -109,18 +109,18 @@ export function activate(context: vscode.ExtensionContext) {
       const suffix = config.suffix || '';
 
       if (config.hideName === true) {
-        insertVal = `${config.format}(${key})`;
+        insertVal = `${config.format}(${key});`;
       } else {
         if (matchFlag === 'var' && key.includes("'")) {
           quote = '"';
         }
-        // format like console.log("xxx", xxx)
+        // format like console.log("xxx", xxx);
         if (matchFlag === 'var') {
-          insertVal = `${config.format}(${quote}${prefix}${key}${suffix}${quote},${key})`;
+          insertVal = `${config.format}(${quote}${prefix}${key}${suffix}${quote}, ${key});`;
         }
-        // if key is string format like console.log("xxx")
+        // if key is string format like console.log("xxx");
         if (matchFlag === 'str') {
-          insertVal = `${config.format}(${quote}${key}${quote})`;
+          insertVal = `${config.format}(${quote}${key}${quote});`;
         }
       }
       edit.insert(position.with(undefined, index), insertVal);
