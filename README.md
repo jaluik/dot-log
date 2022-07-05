@@ -52,7 +52,7 @@ for example, if you set config like this, then the result will be `xxx.exam ===>
 
 ```
 
-the default config is show below, you can copy it end edit it.
+the default config is show below, you can copy it and edit it.
 
 ```json
     "dotLog.config": [
