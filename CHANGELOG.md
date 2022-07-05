@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.6] - 2022-07-05
+
+### Fixed
+
+- fix hideName property to adapt string
+
 ## [0.1.5] - 2022-06-28
 
 ### Docs
